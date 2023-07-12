@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 function Pagamento() {
     return (
@@ -12,7 +13,9 @@ function Pagamento() {
                     <option>Cartão com final 01234</option>
                     <option>Cartão com final 01111</option>
                 </select>
-                <button type='button'>Pagar</button>
+                <Link to="/pagamento/cartao_valido">
+                    <button type='button'>Pagar</button>
+                </Link>
             </div>
         </section> 
     ) 
