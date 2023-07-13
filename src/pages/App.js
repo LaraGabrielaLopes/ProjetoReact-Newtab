@@ -2,10 +2,9 @@ import React from 'react';
 import '../css/App.css'
 import CamposForm from '../componentes/formulario';
 import Pagamento from '../componentes/pagamento';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import CartaoValido from '../componentes/cartao_valido';
+import { BrowserRouter, Routes, Route, } from 'react-router-dom';
 
-function PagePagamento() {
+function App() {
   return(
       <BrowserRouter>
           <Routes>
@@ -13,17 +12,6 @@ function PagePagamento() {
               <Route path="/pagamento" element={<Pagamento />}/>
           </Routes>
       </BrowserRouter>
-  )
-}
-
-function PageCartaoValido() {
-  return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/pagamento" element={<PagePagamento />}/>
-        <Route path="/pagamento/cartao_valido" element={<CartaoValido />}/>
-      </Routes>
-    </BrowserRouter>
   )
 }
 
@@ -38,5 +26,5 @@ function Transacao() {
   )
 }
 
-export default PageCartaoValido;
+export default App;
 
