@@ -1,5 +1,5 @@
 import React from 'react';
-//import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 //import CartaoValido from './cartao_valido';
 
 function Pagamento() {
