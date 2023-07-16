@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-//import CartaoValido from './cartao_valido';
+
 
 function Pagamento() {
     return (
@@ -23,16 +23,3 @@ function Pagamento() {
 }
 
 export default Pagamento;
-/*
-function PagePagamento() {
-    return (
-        <BrowserRouter>
-            <Routes>
-                <Route path='/pagamento' element={<Pagamento />} />
-                <Route path='/pagamento/cartao_valido' element={<CartaoValido />} />
-            </Routes>
-        </BrowserRouter>
-    )
-}
-
-export default PagePagamento;*/
