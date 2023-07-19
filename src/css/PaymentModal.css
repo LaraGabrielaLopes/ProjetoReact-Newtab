@@ -1,0 +1,71 @@
+.ModalBackground {
+    left: 0;
+    top: 0;
+    width: 100%; 
+    height: 100%; 
+    overflow: auto; 
+    background-color: rgba(200, 200, 200, 0.313);
+    position: fixed;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.ModalContainer {
+width: 800px;
+height: 500px;
+border-radius: 12px;
+background-color: white;
+box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+display: flex;
+flex-direction: column;
+padding: 25px;
+} 
+
+.HeaderDiv {
+    display: flex;
+    flex-direction: row;
+    background-color: #474a6e;
+    padding: 20px;
+    border-radius: 5px;
+    margin-bottom: 5px;  
+    color: #fff;
+    justify-content: space-between; 
+}
+
+.CloseButton {
+    border: none;
+    color: white;
+    background-color: transparent;
+    font-size: 20px;
+}
+
+button {
+    cursor: pointer;
+}
+
+.ButtonDiv {
+    width: 60px;
+    margin: 0 auto;
+}
+
+span {
+    color: yellow;
+}
+
+.PaymentForm {
+    display: flex;
+    flex-direction: column;
+}
+
+.PaymentInput {
+    margin-bottom: 5px;
+    height: 30px;
+    border-radius: 5px;
+}
+
+.PaymentSelect {
+    margin-bottom: 5px;
+    height: 30px;
+    border-radius: 5px;
+}
