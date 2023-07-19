@@ -15,7 +15,11 @@ function Pagamento() {
                     <option>Cartão com final 01111</option>
                 </select>
                 <Link to="/pagamento/cartao_valido">
-                    <button type='button'>Pagar</button>
+                    <button type='button'>Pagar Válido</button>
+                </Link>
+
+                <Link to="/pagamento/cartao_invalido">
+                    <button type='button'>Pagar Inválido</button>
                 </Link>
             </div>
         </section> 

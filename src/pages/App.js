@@ -4,6 +4,7 @@ import CamposForm from '../componentes/formulario';
 import Pagamento from '../componentes/pagamento';
 import { BrowserRouter, Routes, Route, } from 'react-router-dom';
 import CartaoValido from '../componentes/cartao_valido';
+import CartaoInvalido from '../componentes/cartao_invalido';
 
 function App() {
   return(
@@ -12,6 +13,7 @@ function App() {
               <Route path="/" element={<Transacao />}/>
               <Route path="/pagamento" element={<Pagamento />}/>
               <Route path="/pagamento/cartao_valido" element={<CartaoValido />} />
+              <Route path="/pagamento/cartao_invalido" element={<CartaoInvalido />} />
           </Routes>
       </BrowserRouter>
   )
