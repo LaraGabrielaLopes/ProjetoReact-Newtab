@@ -6,15 +6,16 @@ import PaymentModal from './PaymentModal';
 
 //Definindo estado inicial:
 export default function UserList() {
-    const [users, setUsers] = useState([]); 
+    const [user, setUser] = useState([]); 
     const [selectedUser, setSelectedUser] = useState({});
     const [message, setMessage] = useState("");
     const [showPaymentModal, setShowPaymentModal] = useState(false);
 
-    //Definindo as alterações a serem realizadas no estado inicial ao clique no botão:
+    //Definindo as alterações a serem realizadas no estado ao clique no botão:
     function handleModal() {
         setShowPaymentModal(true);
-        setSelectedUser(users);
+        setSelectedUser(user);
+        console.log(setSelectedUser(user))
     }
 
     //Definindo o efeito a ser realizado:
@@ -23,7 +24,7 @@ export default function UserList() {
             .get("https://www.mocky.io/v2/5d531c4f2e0000620081ddce")
             .then((response) => {
                 console.log(response)
-                setUsers(response.data)
+                setUser(response.data)
             })
 
             .catch((error) => {
@@ -34,7 +35,7 @@ export default function UserList() {
     //Lista de Usuário:
     return(
         <>
-        {users.map((user) => {
+        {user.map((user) => {
             return(
                 <div className='ListWrapper' key={user.id}>
                     <img className="Face" src={user.img} alt="User's"/>

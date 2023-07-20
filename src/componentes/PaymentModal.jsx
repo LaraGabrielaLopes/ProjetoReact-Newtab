@@ -3,6 +3,7 @@ import "../css/PaymentModal.css";
 import axios from "axios";
 
 export default function PaymentModal(props) {
+  console.log("props.name:", props.name);
 
     //Definindo estado inicial:
     const [userID, setUserID] = useState("");
@@ -36,15 +37,34 @@ export default function PaymentModal(props) {
         },
       ];
 
+    //Definindo a máscara do input:  
     const currencyMask = (e) => {
         e.preventDefault();
 
-        if(/[0-9]+/g.test(e.key) && e.target.value.lenght < 14) {
-            e.target.value += e.key
-        };
+        if((/[0-9]/g).test(e.key) && e.target.value.length < 18) {
+          e.target.value += e.key
+        }
 
-        var myInput = Number(e.target.value.replace(/[0-9]+/g, "") / 100 );
+        var myInput = Number(e.target.value.replace(/[0-9]+/g, ""));
+        myInput = myInput / 100;
         var formatInput = myInput.toLocaleString("pt-BR", {
+          style: "currency",
+          currency: "BRL",
+          minimumFractionDigits: 2,
+        })
+
+        e.target.value = formatInput;
+
+        setPaymentValue(formatInput);
+        setPaymentValueFloat(myInput * 100);
+        setUserID(props.selectedUser.id);
+    };
+        /* const inputValue = e.target.value.replace(/[^\d.]/g, "")
+
+        var myInput = parseFloat(inputValue);
+
+        if(!isNaN(myInput)) {
+          var formatInput = (myInput / 100).toLocaleString("pt-BR", {
             style:"currency",
             currency:"BRL",
             minimumFractionDigits: 2,
@@ -53,10 +73,12 @@ export default function PaymentModal(props) {
         e.target.value = formatInput;
 
         setPaymentValue(formatInput);
-        setPaymentValueFloat(myInput);
+        setPaymentValueFloat(myInput * 100);
         setUserID(props.selectedUser.id);
-
-    };
+        } else {
+          setPaymentValueFloat("")
+        }
+    }; */
 
     const POSTObject = {
         userID,
@@ -77,7 +99,7 @@ export default function PaymentModal(props) {
             if (response.data.status === "Aprovada") {
               props.setMessage("O pagamento foi concluído com sucesso!");
             } else if (response.data.status !== "Aprovada") {
-              props.setMessage("O pagamento não foi concluído com sucesso");
+              props.setMessage("O pagamento NÃO foi concluído com sucesso");
             }
           })
           .catch((error) => {
@@ -91,7 +113,7 @@ export default function PaymentModal(props) {
             <div className="ModalContainer">
                 <div className="HeaderDiv">
                     <header className="PaymentHeader">
-                    Pagamento para <span>{props.name}</span>
+                    Pagamento para {props.name}
                     </header>
                     <button
                     className="CloseButton"
