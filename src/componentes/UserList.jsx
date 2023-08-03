@@ -12,10 +12,10 @@ export default function UserList() {
     const [showPaymentModal, setShowPaymentModal] = useState(false);
 
     //Definindo as alterações a serem realizadas no estado ao clique no botão:
-    function handleModal() {
+    function handleModal(selectedUser) {
+        console.log(selectedUser);
         setShowPaymentModal(true);
-        setSelectedUser(user);
-        console.log(setSelectedUser(user))
+        setSelectedUser(selectedUser);
     }
 
     //Definindo o efeito a ser realizado:

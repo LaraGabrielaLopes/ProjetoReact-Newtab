@@ -3,7 +3,6 @@ import "../css/PaymentModal.css";
 import axios from "axios";
 
 export default function PaymentModal(props) {
-  console.log("props.name:", props.name);
 
     //Definindo estado inicial:
     const [userID, setUserID] = useState("");
@@ -11,7 +10,7 @@ export default function PaymentModal(props) {
     const [cardInfo, setCardInfo] = useState({});
     const [paymentValueFloat, setPaymentValueFloat] = useState(0);
 
-    //Definindo as alterações ao clicar fora do modal e ao resetar:
+    //Definindo as alterações ao clicar fora do modal:
     const handleOutsideModal = (event) => {
         if (event.target.id === "modal") props.isClosed(false)
     };
@@ -38,12 +37,41 @@ export default function PaymentModal(props) {
       ];
 
     //Definindo a máscara do input:  
-    const currencyMask = (e) => {
+    const moneyMaskTestFilter = (e) => {
+      console.log(e.key)
+      if('0123456789'.indexOf(e.key) === -1 && e.key !== 'Backspace') {
+        e.preventDefault()
+        return
+      }
+    }
+
+    const moneyMaskFormatValue = (e) => {
+      let aux_value = e.target.value.replaceAll('R$', '').replaceAll('.','').replaceAll(',','');
+      
+      if(e.target.value) {
+
+        aux_value = '000' + aux_value
+        aux_value = aux_value.replace(/([0-9]{2})$/, '.$1')
+
+        e.target.value = parseFloat(aux_value).toLocaleString("pt-BR", {
+          style: "currency",
+          currency: "BRL",
+          minimumFractionDigits: 3,
+        })
+      }
+
+      setPaymentValue(aux_value);
+      setPaymentValueFloat(parseFloat(aux_value));;
+      setUserID(props.selectedUser.id);
+    }
+    /* const currencyMask = (e) => {
         e.preventDefault();
 
         if((/[0-9]/g).test(e.key) && e.target.value.length < 18) {
           e.target.value += e.key
         }
+
+        console.log(e.target.value)
 
         var myInput = Number(e.target.value.replace(/[0-9]+/g, ""));
         myInput = myInput / 100;
@@ -58,27 +86,7 @@ export default function PaymentModal(props) {
         setPaymentValue(formatInput);
         setPaymentValueFloat(myInput * 100);
         setUserID(props.selectedUser.id);
-    };
-        /* const inputValue = e.target.value.replace(/[^\d.]/g, "")
-
-        var myInput = parseFloat(inputValue);
-
-        if(!isNaN(myInput)) {
-          var formatInput = (myInput / 100).toLocaleString("pt-BR", {
-            style:"currency",
-            currency:"BRL",
-            minimumFractionDigits: 2,
-        });
-
-        e.target.value = formatInput;
-
-        setPaymentValue(formatInput);
-        setPaymentValueFloat(myInput * 100);
-        setUserID(props.selectedUser.id);
-        } else {
-          setPaymentValueFloat("")
-        }
-    }; */
+    };  */
 
     const POSTObject = {
         userID,
@@ -98,8 +106,8 @@ export default function PaymentModal(props) {
             console.log(response);
             if (response.data.status === "Aprovada") {
               props.setMessage("O pagamento foi concluído com sucesso!");
-            } else if (response.data.status !== "Aprovada") {
-              props.setMessage("O pagamento NÃO foi concluído com sucesso");
+            } else {
+              props.setMessage("O pagamento não foi concluído com sucesso");
             }
           })
           .catch((error) => {
@@ -127,7 +135,9 @@ export default function PaymentModal(props) {
                     className="PaymentInput"
                     value={paymentValue}
                     name="paymentValue"
-                    onChange={currencyMask}
+                    //onChange={currencyMask}
+                    onKeyDown={moneyMaskTestFilter}
+                    onKeyUp={moneyMaskFormatValue}
                     />
                     <select
                     className="PaymentSelect"
