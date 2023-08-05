@@ -6,7 +6,7 @@ export default function PaymentModal(props) {
 
     //Definindo estado inicial:
     const [userID, setUserID] = useState("");
-    const [paymentValue, setPaymentValue] = useState("R$ 0,00");
+    const [paymentValue, setPaymentValue] = useState("");
     const [cardInfo, setCardInfo] = useState({});
     const [paymentValueFloat, setPaymentValueFloat] = useState(0);
 
@@ -36,6 +36,7 @@ export default function PaymentModal(props) {
         },
       ];
 
+
     //Definindo a máscara do input:  
     const moneyMaskTestFilter = (e) => {
       console.log(e.key)
@@ -47,51 +48,32 @@ export default function PaymentModal(props) {
 
     const moneyMaskFormatValue = (e) => {
       let aux_value = e.target.value.replaceAll('R$', '').replaceAll('.','').replaceAll(',','');
+      console.log(e.target.value)
       
       if(e.target.value) {
-
-        aux_value = '000' + aux_value
+        aux_value = '000' + aux_value.trim()
         aux_value = aux_value.replace(/([0-9]{2})$/, '.$1')
 
         e.target.value = parseFloat(aux_value).toLocaleString("pt-BR", {
           style: "currency",
           currency: "BRL",
-          minimumFractionDigits: 3,
-        })
-      }
-
-      setPaymentValue(aux_value);
-      setPaymentValueFloat(parseFloat(aux_value));;
-      setUserID(props.selectedUser.id);
-    }
-    /* const currencyMask = (e) => {
-        e.preventDefault();
-
-        if((/[0-9]/g).test(e.key) && e.target.value.length < 18) {
-          e.target.value += e.key
-        }
-
-        console.log(e.target.value)
-
-        var myInput = Number(e.target.value.replace(/[0-9]+/g, ""));
-        myInput = myInput / 100;
-        var formatInput = myInput.toLocaleString("pt-BR", {
-          style: "currency",
-          currency: "BRL",
           minimumFractionDigits: 2,
         })
+        console.log(aux_value)
+        console.log(parseFloat(aux_value))
+      }
 
-        e.target.value = formatInput;
+      setPaymentValue(e.target.value)
+      let valueFloat = (e.target.value.replaceAll('R$', '').replaceAll('.', '').replaceAll(',', '.'))
+      console.log(valueFloat)
+      setPaymentValueFloat(parseFloat(valueFloat))
 
-        setPaymentValue(formatInput);
-        setPaymentValueFloat(myInput * 100);
-        setUserID(props.selectedUser.id);
-    };  */
+    }
 
     const POSTObject = {
+        cardInfo,
         userID,
         paymentValueFloat,
-        cardInfo,
       };
       
       const submitHandler = (e) => {
@@ -104,10 +86,10 @@ export default function PaymentModal(props) {
           )
           .then((response) => {
             console.log(response);
-            if (response.data.status === "Aprovada") {
+            if (response.data.status === "Aprovada" && cardInfo.card_number === "1111111111111111") {
               props.setMessage("O pagamento foi concluído com sucesso!");
             } else {
-              props.setMessage("O pagamento não foi concluído com sucesso");
+              props.setMessage("O pagamento NÃO foi concluído com sucesso");
             }
           })
           .catch((error) => {
@@ -133,26 +115,31 @@ export default function PaymentModal(props) {
                 <form className="PaymentForm" onSubmit={submitHandler}>
                     <input
                     className="PaymentInput"
-                    value={paymentValue}
+                    placeholder="R$ 0,00"
                     name="paymentValue"
-                    //onChange={currencyMask}
+                    
                     onKeyDown={moneyMaskTestFilter}
                     onKeyUp={moneyMaskFormatValue}
+
                     />
                     <select
                     className="PaymentSelect"
                     name="cardInfo"
                     defaultValue={"default"}
                     onChange={(e) => {
-                        setCardInfo(e.target.value);
+                        setCardInfo(JSON.parse(e.target.value));
                     }}
                     >
                         <option value={"default"} disabled>
                         Escolha um cartão para o pagamento
                         </option>
-                    {cards.map((card) => (
-                        <option key={card.card_number} value={JSON.stringify(card)}>
-                        Cartão com final {card.card_number.slice(-4)}
+                        {/* <option>Cartão 1111111111111111</option>
+                        <option>Cartão 4111111111111234</option> */}
+                        {cards.map((card) => (
+                        <option 
+                        key={card.card_number} 
+                        value={JSON.stringify(card)}>
+                        {card.card_number}
                         </option>
                     ))}
                     </select>
