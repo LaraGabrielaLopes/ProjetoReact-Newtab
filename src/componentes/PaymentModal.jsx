@@ -39,8 +39,8 @@ export default function PaymentModal(props) {
 
     //Definindo a máscara do input:  
     const moneyMaskTestFilter = (e) => {
-      console.log(e.key)
       if('0123456789'.indexOf(e.key) === -1 && e.key !== 'Backspace') {
+        alert('Por favor, digite um número')
         e.preventDefault()
         return
       }
@@ -48,7 +48,6 @@ export default function PaymentModal(props) {
 
     const moneyMaskFormatValue = (e) => {
       let aux_value = e.target.value.replaceAll('R$', '').replaceAll('.','').replaceAll(',','');
-      console.log(e.target.value)
       
       if(e.target.value) {
         aux_value = '000' + aux_value.trim()
@@ -59,15 +58,12 @@ export default function PaymentModal(props) {
           currency: "BRL",
           minimumFractionDigits: 2,
         })
-        console.log(aux_value)
-        console.log(parseFloat(aux_value))
       }
 
       setPaymentValue(e.target.value)
       let valueFloat = (e.target.value.replaceAll('R$', '').replaceAll('.', '').replaceAll(',', '.'))
       console.log(valueFloat)
       setPaymentValueFloat(parseFloat(valueFloat))
-
     }
 
     const POSTObject = {
@@ -78,6 +74,11 @@ export default function PaymentModal(props) {
       
       const submitHandler = (e) => {
         e.preventDefault();
+
+        if (!cardInfo.card_number) {
+          alert("Por favor, selecione um cartão antes de fazer o pagamento.");
+          return;
+        }
       
         axios
           .post(
@@ -86,9 +87,10 @@ export default function PaymentModal(props) {
           )
           .then((response) => {
             console.log(response);
+            
             if (response.data.status === "Aprovada" && cardInfo.card_number === "1111111111111111") {
               props.setMessage("O pagamento foi concluído com sucesso!");
-            } else {
+            } else if (response.data.status === "Aprovada" && cardInfo.card_number === "4111111111111234") {
               props.setMessage("O pagamento NÃO foi concluído com sucesso");
             }
           })
@@ -117,10 +119,8 @@ export default function PaymentModal(props) {
                     className="PaymentInput"
                     placeholder="R$ 0,00"
                     name="paymentValue"
-                    
                     onKeyDown={moneyMaskTestFilter}
                     onKeyUp={moneyMaskFormatValue}
-
                     />
                     <select
                     className="PaymentSelect"
@@ -133,8 +133,6 @@ export default function PaymentModal(props) {
                         <option value={"default"} disabled>
                         Escolha um cartão para o pagamento
                         </option>
-                        {/* <option>Cartão 1111111111111111</option>
-                        <option>Cartão 4111111111111234</option> */}
                         {cards.map((card) => (
                         <option 
                         key={card.card_number} 

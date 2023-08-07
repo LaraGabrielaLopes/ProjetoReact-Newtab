@@ -57,6 +57,7 @@ export default function UserList() {
                 selectedUser={selectedUser}
                 setUser={setSelectedUser}
                 message={message}
+                userID={selectedUser.id}
             />}
         </>
     )
